@@ -62,31 +62,45 @@ static WINNING_LINES: [[usize; 3]; 8] = [
     [2, 4, 6],
 ];
 
+enum PlayResult {
+    PositionTaken,
+    Finish(FinishState),
+    Played,
+    BoardComplete,
+    IndexError,
+}
+
 impl TTTBoard {
-    pub fn play(&mut self, player: Player, position: BoardPosition) -> Option<Option<FinishState>> {
+    pub fn play(&mut self, player: Player, position: BoardPosition) -> PlayResult {
         if self.state.is_some() {
             // Board is already Complete
-            return None;
+            return PlayResult::BoardComplete;
         }
 
-        let position_state = self.board.get_mut(position.to_index())?;
+        let position_state_option = self.board.get_mut(position.to_index());
+        let mut position_state: Option<Player>;
+        // unwrap the option
+        match position_state_option {
+            Some(x) => position_state = *x,
+            None => return PlayResult::IndexError,
+        };
 
         match position_state {
             // This postion has already been played in
-            Some(_) => return None,
+            Some(_) => return PlayResult::PositionTaken,
             // Succsesfully play at position
-            None => *position_state = Some(player),
+            None => position_state = Some(player),
         }
 
         let finish = self.check_for_finish();
         match finish {
             // The board is full or has been won
-            Some(x) => return Some(Some(x)),
+            Some(x) => return PlayResult::Finish(x),
             None => {}
         }
 
         // play succeeded and play is still possible
-        return Some(None);
+        return PlayResult::Played;
     }
 
     pub fn check_for_finish(&self) -> Option<FinishState> {
