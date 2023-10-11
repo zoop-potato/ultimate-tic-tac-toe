@@ -10,7 +10,7 @@ pub struct TTTBoard {
     board: [Option<Player>; 9],
 }
 
-#[derive(PartialEq, Eq,Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub enum FinishState {
     Win(Player),
     Draw,
@@ -64,12 +64,12 @@ static WINNING_LINES: [[usize; 3]; 8] = [
 
 #[derive(PartialEq, Eq, Debug)]
 enum PlayResult {
-    Finish(FinishState),    // Success
-    GameFinish(FinishState),// Success
-    Played,                 // Success
-    PositionTaken,          // Fail
-    BoardComplete,          // Fail
-    IndexError,             // Fail
+    Finish(FinishState),     // Success
+    GameFinish(FinishState), // Success
+    Played,                  // Success
+    PositionTaken,           // Fail
+    BoardComplete,           // Fail
+    IndexError,              // Fail
 }
 
 impl TTTBoard {
@@ -121,20 +121,21 @@ impl TTTBoard {
             .iter()
             .map(|line| line.iter().all(|position| *position == Some(Player::X)))
             .any(|line_win| line_win == true);
-        if x_won { return Some(FinishState::Win(Player::X));}
+        if x_won {
+            return Some(FinishState::Win(Player::X));
+        }
 
         // Check if O won
         let o_won = mapped_lines
             .iter()
             .map(|line| line.iter().all(|position| *position == Some(Player::O)))
             .any(|line_win| line_win == true);
-        if o_won { return Some(FinishState::Win(Player::O));}
+        if o_won {
+            return Some(FinishState::Win(Player::O));
+        }
 
         // Check for draw
-        let full = !self
-            .board
-            .iter()
-            .any(|position| *position == None);
+        let full = !self.board.iter().any(|position| *position == None);
         match full {
             // the board is full, therefore draw
             true => return Some(FinishState::Draw),
