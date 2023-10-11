@@ -69,6 +69,7 @@ enum PlayResult {
     Played,                  // Success
     PositionTaken,           // Fail
     BoardComplete,           // Fail
+    WrongBoard,              // Fail
     IndexError,              // Fail
 }
 
