@@ -64,7 +64,7 @@ static WINNING_LINES: [[usize; 3]; 8] = [
 ];
 
 #[derive(PartialEq, Eq, Debug)]
-enum PlayResult {
+pub enum PlayResult {
     BoardFinish(FinishState), // Success
     GameFinish(FinishState),  // Success
     Played,                   // Success
