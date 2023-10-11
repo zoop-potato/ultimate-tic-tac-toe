@@ -4,13 +4,13 @@ pub struct UTTTBoard {
     board: [TTTBoard; 9],
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct TTTBoard {
     state: Option<FinishState>,
     board: [Option<Player>; 9],
 }
 
-#[derive(Clone, PartialEq, Eq, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub enum FinishState {
     Win(Player),
     Draw,
