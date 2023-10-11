@@ -110,12 +110,10 @@ impl TTTBoard {
         if o_won { return Some(FinishState::Win(Player::O));}
 
         // Check for draw
-        let full = self
+        let full = !self
             .board
             .iter()
-            .filter(|position_state| position_state.is_none())
-            .collect::<Vec<&Option<Player>>>()
-            .is_empty();
+            .any(|position| *position == None);
         match full {
             // the board is full, therefore draw
             true => return Some(FinishState::Draw),
