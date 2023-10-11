@@ -97,7 +97,10 @@ impl TTTBoard {
         let finish = self.check_for_finish();
         match finish {
             // The board is full or has been won
-            Some(x) => return PlayResult::Finish(x),
+            Some(x) => {
+                self.state = Some(x.clone());
+                return PlayResult::Finish(x);
+            }
             None => {}
         }
 
