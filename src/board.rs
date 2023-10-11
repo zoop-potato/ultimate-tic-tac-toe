@@ -1,24 +1,25 @@
-struct UTTTBoard {
+pub struct UTTTBoard {
     state: Option<FinishState>,
     board: [TTTBoard; 9],
 }
 
-struct TTTBoard {
+pub struct TTTBoard {
     state: Option<FinishState>,
     board: [Option<Player>; 9],
 }
-enum FinishState {
+
+pub enum FinishState {
     Win(Player),
     Draw,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
-enum Player {
+pub enum Player {
     X,
     O,
 }
 
-enum BoardPosition {
+pub enum BoardPosition {
     TopLeft,
     TopMiddle,
     TopRight,
@@ -58,7 +59,7 @@ static WINNING_LINES: [[usize; 3]; 8] = [
 ];
 
 impl TTTBoard {
-    fn play(mut self, player: Player, position: BoardPosition) -> Option<Option<FinishState>> {
+    pub fn play(&mut self, player: Player, position: BoardPosition) -> Option<Option<FinishState>> {
         if self.state.is_some() {
             // Board is already Complete
             return None;
@@ -84,7 +85,7 @@ impl TTTBoard {
         return Some(None);
     }
 
-    fn check_for_finish(self) -> Option<FinishState> {
+    pub fn check_for_finish(&self) -> Option<FinishState> {
         // map every index in WINNING_LINES to its value
         let mapped_lines = WINNING_LINES
             .iter()
@@ -122,7 +123,7 @@ impl TTTBoard {
         }
     }
 
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             state: None,
             board: [None; 9],
