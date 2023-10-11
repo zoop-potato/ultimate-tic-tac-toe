@@ -63,11 +63,11 @@ static WINNING_LINES: [[usize; 3]; 8] = [
 ];
 
 enum PlayResult {
-    PositionTaken,
-    Finish(FinishState),
-    Played,
-    BoardComplete,
-    IndexError,
+    Finish(FinishState),// Success
+    Played,             // Success
+    PositionTaken,      // Fail
+    BoardComplete,      // Fail
+    IndexError,         // Fail
 }
 
 impl TTTBoard {
