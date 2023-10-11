@@ -74,6 +74,15 @@ pub enum PlayResult {
     IndexError,               // Fail
 }
 
+impl PlayResult {
+    pub fn is_success(&self) -> bool {
+        match self {
+            Self::BoardFinish(_) | Self::GameFinish(_) | Self::Played => true,
+            _ => false,
+        }
+    }
+}
+
 impl TTTBoard {
     pub fn play(&mut self, player: Player, position: BoardPosition) -> PlayResult {
         if self.state.is_some() {
