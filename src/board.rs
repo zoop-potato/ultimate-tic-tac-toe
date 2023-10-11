@@ -64,11 +64,12 @@ static WINNING_LINES: [[usize; 3]; 8] = [
 
 #[derive(PartialEq, Eq, Debug)]
 enum PlayResult {
-    Finish(FinishState),// Success
-    Played,             // Success
-    PositionTaken,      // Fail
-    BoardComplete,      // Fail
-    IndexError,         // Fail
+    Finish(FinishState),    // Success
+    GameFinish(FinishState),// Success
+    Played,                 // Success
+    PositionTaken,          // Fail
+    BoardComplete,          // Fail
+    IndexError,             // Fail
 }
 
 impl TTTBoard {
