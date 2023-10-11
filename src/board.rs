@@ -2,6 +2,7 @@
 pub struct UTTTBoard {
     state: Option<FinishState>,
     board: [TTTBoard; 9],
+    play_in: Option<BoardPosition>,
 }
 
 #[derive(Clone, Copy, Debug)]
