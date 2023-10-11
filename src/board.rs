@@ -10,7 +10,7 @@ pub struct TTTBoard {
     board: [Option<Player>; 9],
 }
 
-#[derive(Debug)]
+#[derive(PartialEq, Eq,Debug)]
 pub enum FinishState {
     Win(Player),
     Draw,
@@ -62,6 +62,7 @@ static WINNING_LINES: [[usize; 3]; 8] = [
     [2, 4, 6],
 ];
 
+#[derive(PartialEq, Eq, Debug)]
 enum PlayResult {
     Finish(FinishState),// Success
     Played,             // Success
