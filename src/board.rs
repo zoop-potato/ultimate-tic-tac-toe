@@ -10,7 +10,7 @@ pub struct TTTBoard {
     board: [Option<Player>; 9],
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(Clone, PartialEq, Eq, Debug)]
 pub enum FinishState {
     Win(Player),
     Draw,
