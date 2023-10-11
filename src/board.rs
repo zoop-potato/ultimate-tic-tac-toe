@@ -65,20 +65,20 @@ static WINNING_LINES: [[usize; 3]; 8] = [
 
 #[derive(PartialEq, Eq, Debug)]
 enum PlayResult {
-    Finish(FinishState),     // Success
-    GameFinish(FinishState), // Success
-    Played,                  // Success
-    PositionTaken,           // Fail
-    BoardComplete,           // Fail
-    WrongBoard,              // Fail
-    IndexError,              // Fail
+    BoardFinish(FinishState), // Success
+    GameFinish(FinishState),  // Success
+    Played,                   // Success
+    PositionTaken,            // Fail
+    BoardIsFilled,            // Fail
+    WrongBoard,               // Fail
+    IndexError,               // Fail
 }
 
 impl TTTBoard {
     pub fn play(&mut self, player: Player, position: BoardPosition) -> PlayResult {
         if self.state.is_some() {
             // Board is already Complete
-            return PlayResult::BoardComplete;
+            return PlayResult::BoardIsFilled;
         }
 
         let position_state_option = self.board.get_mut(position.to_index());
@@ -101,7 +101,7 @@ impl TTTBoard {
             // The board is full or has been won
             Some(x) => {
                 self.state = Some(x.clone());
-                return PlayResult::Finish(x);
+                return PlayResult::BoardFinish(x);
             }
             None => {}
         }
