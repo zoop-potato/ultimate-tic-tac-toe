@@ -23,7 +23,7 @@ pub enum Player {
     O,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub enum BoardPosition {
     TopLeft,
     TopMiddle,
