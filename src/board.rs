@@ -91,10 +91,10 @@ impl TTTBoard {
         }
 
         let position_state_option = self.board.get_mut(position.to_index());
-        let mut position_state: Option<Player>;
+        let mut position_state: &mut Option<Player>;
         // unwrap the option
         match position_state_option {
-            Some(x) => position_state = *x,
+            Some(x) => position_state = x,
             None => return PlayResult::IndexError,
         };
 
@@ -102,7 +102,7 @@ impl TTTBoard {
             // This postion has already been played in
             Some(_) => return PlayResult::PositionTaken,
             // Succsesfully play at position
-            None => position_state = Some(player),
+            None => *position_state = Some(player),
         }
 
         let finish = self.check_for_finish();
