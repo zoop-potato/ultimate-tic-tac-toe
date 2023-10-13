@@ -173,6 +173,11 @@ impl UTTTBoard {
         large_position: BoardPosition,
         small_position: BoardPosition,
     ) -> PlayResult {
+        // check state to see if the game is already over
+        if self.state.is_some() {
+            return PlayResult::BoardIsFilled;
+        }
+
         // check if large_position is allowed by play_in
         if self.play_in.is_some() {
             if self.play_in.unwrap() != large_position {
