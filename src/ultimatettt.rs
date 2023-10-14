@@ -6,6 +6,15 @@ pub struct UTTTMove {
     small_position: BoardPosition,
 }
 
+impl From<(BoardPosition, BoardPosition)> for UTTTMove {
+    fn from(value: (BoardPosition, BoardPosition)) -> Self {
+        UTTTMove {
+            large_position: value.0,
+            small_position: value.1,
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct UTTTBoard {
     state: Option<FinishState>,
