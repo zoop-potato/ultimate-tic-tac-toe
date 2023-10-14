@@ -6,7 +6,7 @@ pub trait Board {
 
     fn play(&mut self, player: Self::Player, choice: Self::Move) -> Self::PlayResult;
 
-    fn check_for_finish(&self) -> Self::Finish;
+    fn check_for_finish(&self) -> Option<Self::Finish>;
 
     fn new_board() -> Self;
 }
