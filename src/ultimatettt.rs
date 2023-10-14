@@ -1,6 +1,11 @@
 use super::board::*;
 use super::tictactoe::*;
 
+pub struct UTTTMove {
+    large_position: BoardPosition,
+    small_position: BoardPosition,
+}
+
 #[derive(Debug)]
 pub struct UTTTBoard {
     state: Option<FinishState>,
@@ -8,13 +13,13 @@ pub struct UTTTBoard {
     play_in: Option<BoardPosition>,
 }
 
-impl UTTTBoard {
-    pub fn play(
-        &mut self,
-        player: Player,
-        large_position: BoardPosition,
-        small_position: BoardPosition,
-    ) -> PlayResult {
+impl Board for UTTTBoard {
+    type PlayResult = PlayResult;
+    type Finish = FinishState;
+    type Move = UTTTMove;
+    type Player = Player;
+
+    fn play(&mut self, player: Player, choice: Self::Move) -> PlayResult {
         // check state to see if the game is already over
         if self.state.is_some() {
             return PlayResult::BoardIsFilled;
@@ -22,14 +27,14 @@ impl UTTTBoard {
 
         // check if large_position is allowed by play_in
         if self.play_in.is_some() {
-            if self.play_in.unwrap() != large_position {
+            if self.play_in.unwrap() != choice.large_position {
                 // large_position is not allowed
                 return PlayResult::WrongBoard;
             }
         }
 
         // Get board at large_position
-        let board_option = self.board.get_mut(large_position.to_index());
+        let board_option = self.board.get_mut(choice.large_position.to_index());
 
         // unwarp board_option
         let mut board: &mut TTTBoard;
@@ -39,12 +44,12 @@ impl UTTTBoard {
         }
 
         // play on small board and store result
-        let mut play_result = board.play(player, small_position);
+        let mut play_result = board.play(player, choice.small_position);
 
         // check if the board is finished
         if let PlayResult::BoardFinish(_) = play_result {
             // small board is finished so check if game is over
-            let game_finish = self.check_for_game_finish();
+            let game_finish = self.check_for_finish();
             if let Some(finish_state) = game_finish {
                 // game is over so set state and return
                 self.state = Some(finish_state);
@@ -55,8 +60,8 @@ impl UTTTBoard {
         // if play_result is_success then set play_in
         if play_result.is_success() {
             // only restrict play if the board can be played in
-            if self.board[small_position.to_index()].state.is_none() {
-                self.play_in = Some(small_position);
+            if self.board[choice.small_position.to_index()].state.is_none() {
+                self.play_in = Some(choice.small_position);
             } else {
                 self.play_in = None;
             }
@@ -66,7 +71,7 @@ impl UTTTBoard {
         return play_result;
     }
 
-    pub fn check_for_game_finish(&self) -> Option<FinishState> {
+    fn check_for_finish(&self) -> Option<FinishState> {
         // map every index in WINNING_LINES to its value
         let mapped_lines = WINNING_LINES
             .iter()
@@ -111,10 +116,10 @@ impl UTTTBoard {
         }
     }
 
-    pub fn new() -> Self {
+    fn new_board() -> Self {
         Self {
             state: None,
-            board: [TTTBoard::new(); 9],
+            board: [TTTBoard::new_board(); 9],
             play_in: None,
         }
     }

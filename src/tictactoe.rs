@@ -78,8 +78,13 @@ pub struct TTTBoard {
     pub board: [Option<Player>; 9],
 }
 
-impl TTTBoard {
-    pub fn play(&mut self, player: Player, position: BoardPosition) -> PlayResult {
+impl Board for TTTBoard {
+    type PlayResult = PlayResult;
+    type Finish = FinishState;
+    type Move = BoardPosition;
+    type Player = Player;
+
+    fn play(&mut self, player: Player, position: BoardPosition) -> PlayResult {
         if self.state.is_some() {
             // Board is already Complete
             return PlayResult::BoardIsFilled;
@@ -114,7 +119,7 @@ impl TTTBoard {
         return PlayResult::Played;
     }
 
-    pub fn check_for_finish(&self) -> Option<FinishState> {
+    fn check_for_finish(&self) -> Option<FinishState> {
         // map every index in WINNING_LINES to its value
         let mapped_lines = WINNING_LINES
             .iter()
@@ -153,7 +158,7 @@ impl TTTBoard {
         }
     }
 
-    pub fn new() -> Self {
+    fn new_board() -> Self {
         Self {
             state: None,
             board: [None; 9],
